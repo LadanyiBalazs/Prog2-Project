@@ -20,9 +20,6 @@ public class TileMap {
     private int xmax;
     private int ymax;
 
-    //smooth camera
-    private double tween;
-
     //map
     private int[] [] map;
     private int tileSize;
@@ -68,9 +65,7 @@ public class TileMap {
         }
     }
     public void loadMap(String s) {
-
         try {
-
             InputStream in = getClass().getResourceAsStream(s);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
