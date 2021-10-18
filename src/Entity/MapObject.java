@@ -20,7 +20,7 @@ public abstract class MapObject {
     protected double dx;
     protected double dy;
 
-    //dimesions
+    //dimensions
     protected int width;
     protected int height;
 
@@ -39,6 +39,11 @@ public abstract class MapObject {
     protected boolean topRight;
     protected boolean bottomLeft;
     protected boolean bottomRight;
+
+    // animation
+    protected Animation animation;
+    protected int currentAction;
+    protected int previousAction;
 
     //movement
     protected boolean left;
