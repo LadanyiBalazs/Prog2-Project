@@ -114,7 +114,7 @@ public abstract class MapObject {
         if (dy < 0) {
             if (topLeft || topRight) {
                 dy = 0;
-                ytemp = currRow * tileSize + cheight / 2;
+                ytemp = currRow * tileSize + cheight;
             }
             else {
                 ytemp += dy;
@@ -146,7 +146,7 @@ public abstract class MapObject {
         }
 
         //hit tile right
-        if (dy > 0) {
+        if (dx > 0) {
             if (topRight || bottomRight) {
                 dx = 0;
                 xtemp = (currCol + 1) * tileSize - cwidth / 2;
@@ -159,7 +159,7 @@ public abstract class MapObject {
         if (!falling) {
             calculateCorners(x, ydest + 1);
             if (!bottomLeft && !bottomRight) {
-                falling = true;
+                setFalling(true);
             }
         }
 
@@ -192,8 +192,13 @@ public abstract class MapObject {
     public void setDown(boolean b) { down = b; }
     public void setJumping(boolean b) { jumping = b; }
 
+    public void setFalling(boolean b) { falling = b; dy = y; }
+
     public boolean notOnScreen() {
         return x + xmap + width < 0 || x + xmap - width > GamePanel.WIDTH || y + ymap + height < 0 || y + ymap - height > GamePanel.HEIGHT;
     }
 
+    public int getTileHeight() {
+        return tileMap.getHeight();
+    }
 }

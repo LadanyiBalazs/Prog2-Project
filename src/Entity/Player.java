@@ -2,7 +2,6 @@ package Entity;
 
 import TileMap.*;
 
-import java.nio.Buffer;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -12,6 +11,9 @@ public class Player extends MapObject {
 
     //player stuff
     private boolean dead;
+
+    private int respawnX;
+    private int respawnY;
 
     // animations
     private ArrayList<BufferedImage[]> sprites;
@@ -31,7 +33,7 @@ public class Player extends MapObject {
 
         width = 30;
         height = 30;
-        cwidth = 20;
+        cwidth = 16;
         cheight = 20;
 
         moveSpeed = 0.3;
@@ -41,6 +43,10 @@ public class Player extends MapObject {
         maxFallSpeed = 4.0;
         jumpStart = -4.8;
         stopJumpSpeed = 0.3;
+
+        respawnX = 0;
+        respawnY = 0;
+        dead = false;
 
         //load sprites
         try {
@@ -102,7 +108,7 @@ public class Player extends MapObject {
         }
 
         //jumping
-        if (jumping &&!falling) {
+        if (jumping && !falling) {
             dy = jumpStart;
             falling = true;
         }
@@ -113,9 +119,10 @@ public class Player extends MapObject {
                 dy += fallSpeed;
 
             if (dy > 0) jumping = false;
-            if (dy < 0 && !jumping) y += stopJumpSpeed;
+            if (dy < 0 && !jumping) dy += stopJumpSpeed;
 
             if (dy > maxFallSpeed) dy = maxFallSpeed;
+
         }
 
     }
@@ -125,6 +132,20 @@ public class Player extends MapObject {
         //update position
         getNextPosition();
         checkTileMapCollision();
+        if (ytemp <= cheight)
+            ytemp = cheight;
+        if (ytemp >= getTileHeight() - cheight) {
+            ytemp = getTileHeight() - cheight;
+
+            dead = true;
+        }
+
+        if (dead) {
+            setPosition(respawnX, respawnY);
+            dead = false;
+            return;
+        }
+
         setPosition(xtemp, ytemp);
 
         //set animation
@@ -173,5 +194,7 @@ public class Player extends MapObject {
                 (int) (x + xmap - width / 2),
                 (int) (y + ymap -height / 2), null);
     }
+
+    public void setRespawnPosition(int x, int y) { respawnX = x; respawnY = y; }
 
 }

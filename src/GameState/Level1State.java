@@ -27,6 +27,8 @@ public class Level1State extends GameState {
 
         player = new Player(tileMap);
         player.setPosition(100, 100);
+        player.setRespawnPosition(100, 100);
+        player.setFalling(true);
     }
 
     public void update() {
