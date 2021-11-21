@@ -54,6 +54,7 @@ public class Level1State extends GameState {
         if (k == KeyEvent.VK_UP) player.setUp(true);
         if (k == KeyEvent.VK_DOWN) player.setDown(true);
         if (k == KeyEvent.VK_SPACE) player.setJumping(true);
+        if (k == KeyEvent.VK_R) player.setScratching();
     }
     public void keyReleased(int k) {
         if (k == KeyEvent.VK_LEFT) player.setLeft(false);

@@ -12,13 +12,17 @@ public class Player extends MapObject {
     //player stuff
     private boolean dead;
 
+    //scratch
+    private boolean scratching;
+    private int scratchRange;
+
     private int respawnX;
     private int respawnY;
 
     // animations
     private ArrayList<BufferedImage[]> sprites;
     private final int[] numFrames = {
-            1, 2, 1, 1
+            1, 2, 1, 1, 2
     };
 
     // animation actions
@@ -26,6 +30,7 @@ public class Player extends MapObject {
     private static final int WALKING = 1;
     private static final int JUMPING = 2;
     private static final int FALLING = 3;
+    private static final int SCRATCHING = 4;
 
     public Player(TileMap tm) {
 
@@ -44,6 +49,8 @@ public class Player extends MapObject {
         jumpStart = -4.8;
         stopJumpSpeed = 0.3;
 
+        scratchRange = 40;
+
         respawnX = 0;
         respawnY = 0;
         dead = false;
@@ -56,12 +63,17 @@ public class Player extends MapObject {
             sprites = new ArrayList<BufferedImage[]>();
 
         //animation
-            for(int i = 0; i < 4; i++) {
+            for(int i = 0; i < 5; i++) {
                 BufferedImage[] bi = new BufferedImage[numFrames[i]];
                 for(int j = 0; j < numFrames[i]; j++){
-                bi[j] = spritesheet.getSubimage(j * width, i * height, width, height);
-                }
 
+                    if(i != 5) {
+                        bi[j] = spritesheet.getSubimage(j * width, i * height, width, height);
+                    }
+                    else {
+                        bi[j] = spritesheet.getSubimage(j * width * 2, i * height, width, height);
+                    }
+                }
                 sprites.add(bi);
             }
 
@@ -75,6 +87,10 @@ public class Player extends MapObject {
         animation.setFrames(sprites.get(IDLE));
         animation.setDelay(-1);
 
+    }
+
+    public void setScratching() {
+        scratching = true;
     }
 
     private void getNextPosition() {
@@ -125,6 +141,11 @@ public class Player extends MapObject {
 
         }
 
+        //cannot move while attacking
+        if((currentAction == SCRATCHING) && !(jumping || falling)){
+            dx = 0;
+        }
+
     }
 
     public void update() {
@@ -163,6 +184,14 @@ public class Player extends MapObject {
                 animation.setFrames(sprites.get(JUMPING));
                 animation.setDelay(-1);
                 width = 30;
+            }
+        }
+        else if (scratching) {
+            if (currentAction != SCRATCHING) {
+                currentAction = SCRATCHING;
+                animation.setFrames(sprites.get(SCRATCHING));
+                animation.setDelay(50);
+                width = 60;
             }
         }
         else if (left || right) {

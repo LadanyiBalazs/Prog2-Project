@@ -52,6 +52,7 @@ public abstract class MapObject {
     protected boolean down;
     protected boolean jumping;
     protected boolean falling;
+    protected boolean scratching;
 
     //movement attributes
     protected double moveSpeed;
@@ -191,6 +192,7 @@ public abstract class MapObject {
     public void setUp(boolean b) { up = b; }
     public void setDown(boolean b) { down = b; }
     public void setJumping(boolean b) { jumping = b; }
+
 
     public void setFalling(boolean b) { falling = b; dy = y; }
 
