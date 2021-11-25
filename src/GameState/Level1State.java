@@ -6,6 +6,7 @@ import Game.GamePanel;
 import TileMap.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.Color;
 
 public class Level1State extends GameState {
 
@@ -29,6 +30,7 @@ public class Level1State extends GameState {
         player.setPosition(100, 100);
         player.setRespawnPosition(100, 100);
         player.setFalling(true);
+
     }
 
     public void update() {
@@ -38,7 +40,8 @@ public class Level1State extends GameState {
     public void draw(Graphics2D g) {
 
         //clear screen
-        g.setColor(Color.WHITE);
+        Color lightBlue= new Color(135, 206, 235);
+        g.setColor(lightBlue);
         g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
 
         //draw tilemap

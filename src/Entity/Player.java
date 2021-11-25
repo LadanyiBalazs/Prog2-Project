@@ -11,6 +11,9 @@ public class Player extends MapObject {
 
     //player stuff
     private boolean dead;
+    private Long lastDeadTime;
+    private Color respawnColor;
+    private Font respawnFont;
 
     private int respawnX;
     private int respawnY;
@@ -30,6 +33,9 @@ public class Player extends MapObject {
     public Player(TileMap tm) {
 
         super(tm);
+
+        respawnColor = new Color(128, 0, 0);
+        respawnFont = new Font("Century Githic", Font.PLAIN, 28);
 
         width = 30;
         height = 30;
@@ -137,12 +143,12 @@ public class Player extends MapObject {
         if (ytemp >= getTileHeight() - cheight) {
             ytemp = getTileHeight() - cheight;
 
+            if (!dead)
+                lastDeadTime = System.currentTimeMillis();
             dead = true;
         }
 
         if (dead) {
-            setPosition(respawnX, respawnY);
-            dead = false;
             return;
         }
 
@@ -185,9 +191,25 @@ public class Player extends MapObject {
 
     }
 
+    private void respawnEvent() {
+        setPosition(respawnX, respawnY);
+        dead = false;
+    }
+
     public void draw(Graphics2D g) {
 
         setMapPosition();
+
+        //Death text
+        if (dead) {
+
+            g.setFont(respawnFont);
+            g.setColor(respawnColor);
+            g.drawString("You Died!", 100, 70);
+
+            if (lastDeadTime + 3000 < System.currentTimeMillis())
+                respawnEvent();
+        }
 
         //draw player
         g.drawImage(animation.getImage(),
